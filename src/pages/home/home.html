@@ -3,7 +3,7 @@
   <ion-navbar color="secondary">
   
     <ion-title>      
-      <ion-searchbar color="primary" placeholder="Digite o nome do gif.."></ion-searchbar>
+      <ion-searchbar color="primary" placeholder="Digite o nome do gif.." [(ngModel)]="subredditValue" [formControl]="subredditControl" value=""></ion-searchbar>
     </ion-title>
   
     <ion-buttons end>
