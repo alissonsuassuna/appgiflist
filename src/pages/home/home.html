@@ -1,14 +1,70 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
+  
+  <ion-navbar color="secondary">
+  
+    <ion-title>      
+      <ion-searchbar color="primary" placeholder="Digite o nome do gif.."></ion-searchbar>
     </ion-title>
+  
+    <ion-buttons end>
+      <button ion-button icon-only (click)="openSettings()"><ion-icon name="settings"></ion-icon> </button>
+    </ion-buttons>
+  
   </ion-navbar>
+
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content>
+  <ion-list>
+    <ion-item no-lines>
+      Alisson Suassuna
+    </ion-item>
+    <ion-list-header>
+      handhead
+    </ion-list-header>
+
+    <ion-item *ngIf="redditService.loading" no-lines style="text-align: center;">
+      <img src="assets/images/loader.gif" style="width: 50px" />
+    </ion-item>
+  </ion-list>
+
+  <button ion-button full color="light" (click)="loadMore()">Load More...</button>
 </ion-content>
+
+<!--
+Na primeira parte deste código, estamos configurando a barra de navegação
+
+Nós adicionamos o atributo secundário para o <ion-navbar> que irá alterar seu estilo para usar o secundário
+Cor, que vamos estar mudando mais tarde.
+Estamos usando <ion-title>, que normalmente é usado para fornecer um título a ser exibido na barra de navegação, para posicionar
+Nossa barra de pesquisa no meio do navbar. Normalmente, você teria uma barra de ferramentas separada para uma barra de pesquisa para que
+Ele pode ocupar todo o espaço, mas eu não queria desordenar a tela muito, então nós vamos dobrar
+As regras um pouco aqui com isso. Para que ele seja exibido corretamente, precisamos adicionar alguns estilos personalizados mais tarde.
+Observe que também estamos fornecendo o atributo principal para dar à barra de pesquisa a cor primária.
+Então nós usamos <íon-botões> para colocar nosso botão de configurações, que lançará nossa página de configurações no
+Navbar Usando a diretiva final colocará o botão à direita, e se quisermos colocar um botão no
+À esquerda, poderíamos usar a diretiva start. Também adicionamos um ouvinte (clicar) a este botão para que o
+A função openSettings será chamada quando o botão é clicado. Ainda não criamos esta função
+Então nada vai acontecer, mas vamos defini-lo mais tarde em home.ts.
+
+Em seguida, definimos uma lista na área de conteúdo principal
+
+As listas são um dos componentes mais utilizados nos aplicativos móveis. Em Ionic você pode criar um
+<Ion-list> e forneça-lhe qualquer número de tags <ion-item> para criar uma lista. Por enquanto, só temos um
+Item único, mas mais tarde vamos modificar isso para fazer um loop automaticamente sobre cada GIF que queremos exibir. Aviso prévio
+Que também estamos usando <ion-list-header> para criar uma área de cabeçalho onde poderemos exibir o
+Título do GIF, e também adicionar linhas não ao item para que não haja bordas em torno de itens de lista.
+Bem como os nossos itens GIF, vamos adicionar um item adicional na parte inferior da lista que irá conter
+Uma animação de carregamento. Isso será usado para exibir uma animação girando quando novos GIFs estão sendo buscados,
+Mas como só queremos que ele seja exibido quando o carregamento está ocorrendo, usamos a diretiva * ngIf para controlar quando
+Ele é exibido. Nesse caso, a animação de carregamento só será exibida quando o carregamento for avaliado como verdadeiro (
+Defina isso em nossa definição de classe mais tarde, e alternar ele em e fora quando estamos carregando).
+O último bit de código que temos no nosso modelo é o botão carregar mais:
+
+  <Button ion-button full color = "light" (clique) = "loadMore ()"> Carregar
+      Mais ... </ button>
+
+Nada muito louco acontecendo aqui, nós fornecemos a luz directiva para mudar novamente a cor e nós temos
+Uma função (clique) configurada que acabará por chamar a função loadMore () que vamos definir na nossa classe
+definição.
+-->
