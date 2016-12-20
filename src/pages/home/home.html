@@ -16,13 +16,15 @@
 
 <ion-content>
   <ion-list>
-    <ion-item no-lines>
-      Alisson Suassuna
-    </ion-item>
-    <ion-list-header>
-      handhead
-    </ion-list-header>
-
+    <div *ngFor="let post of redditService.post">
+      <ion-item (click)="playVideo($event, post)" no-lines style="background-color: #000;">
+        <img src="assets/images/loader.gif" *ngIf="post.showLoader" />
+        <video loop [src]="post.data.url" [poster]="post.data.snapshot"></video>
+      </ion-item>
+      <ion-list-header (click)="showComments(post)" style="text-align: left;">
+        {{post.data.title}}
+      </ion-list-header>
+    </div>
     <ion-item *ngIf="redditService.loading" no-lines style="text-align: center;">
       <img src="assets/images/loader.gif" style="width: 50px" />
     </ion-item>
@@ -67,4 +69,23 @@ O último bit de código que temos no nosso modelo é o botão carregar mais:
 Nada muito louco acontecendo aqui, nós fornecemos a luz directiva para mudar novamente a cor e nós temos
 Uma função (clique) configurada que acabará por chamar a função loadMore () que vamos definir na nossa classe
 definição.
+
+=======================
+Preparando para recebe os dados da api
+
+Como você pode ver acima, agora estamos usando o URL do post como a fonte do elemento 
+de vídeo, bem como Como suportam o instantâneo de visualização como o cartaz e o 
+título no cabeçalho. Também adicionamos mais alguns Coisas aqui também.
+Adicionamos um evento de clique que chamará a função playVideo quando o vídeo for 
+tocado, o qual passará Ao longo do $ evento (que vou explicar em apenas um momento) 
+e uma referência para o post que foi clicado. Nós Tem um evento de clique separado 
+para o <ion-list-header> que mostra o título GIFs que irá lançar o
+InAppBrowser. Adicionamos também o GIF do carregador ao item na lista. Quando um 
+usuário toca em um vídeo ainda precisará de algum tempo Para carregar, então 
+adicionamos a animação de carregamento para que o usuário saiba que algo está 
+acontecendo. Sem ele, O usuário provavelmente vai apenas pensar que o aplicativo 
+não está funcionando. Vamos também adicionar um pouco de código para a função 
+loadSettings para que a função fetchData seja chamada Quando executamos o aplicativo 
+(uma vez que loadSettings é chamado pelo construtor). Isto é apenas para que possamos
+Ver algumas coisas acontecendo agora, vamos mudá-lo mais tarde.
 -->
