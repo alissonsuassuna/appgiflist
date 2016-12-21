@@ -45,7 +45,26 @@ export class HomePage {
     this.redditService.fetchData();
   }
   openSettings(): void{
-    console.log("sdd");
+    
+    let settingsModal = this.modalCtrl.create(SettingsPage, {
+      perPage: this.redditService.perPage,
+      sort: this.redditService.sort,
+      subreddit: this.redditService.subreddit
+    });
+
+    settingsModal.onDidDismiss(settings => {
+
+      if(settings){
+        this.redditService.perPage = settings.perPage;
+        this.redditService.sort = settings.sort;
+        this.redditService.subreddit = settings.subreddit;
+
+        //this.dataService.save(settings);
+        this.changeSubreddit();
+      }
+    });
+
+    settingsModal.present();
   }
   playVideo(e, post): void{
     
@@ -72,7 +91,7 @@ export class HomePage {
     }
   }
   changeSubreddit(): void{
-    console.log("aaaa");
+    this.redditService.resetPosts();
   }
   loadMore(): void{
     this.redditService.nextPage();
@@ -197,5 +216,24 @@ função showComments
 
 Comparado com os outros, esta é uma função muito simples. Nós simplesmente pegar o link dos dados dos posts e
 Use InAppBrowser para iniciá-lo.
+=====================================
+função openSettings
+
+Como você pode ver acima, passamos a página de Configurações que criamos para o 
+Modal que estamos criando e também Passar pelos dados que estão a acumular na 
+página Definições aqui. Nós configuramos um ouvinte onDidDismiss que irá detectar 
+quando o Modal é fechado e passar em todos os dados que
+Foi enviado de volta quando o Modal foi demitido. Uma vez que estamos apenas 
+fornecendo dados Função quando o usuário acerta salvar, esta é a única vez este 
+código será executado. Se houver configurações passadas de volta
+Então atualizamos os valores atuais com os novos valores, e também usamos o 
+nosso dataService para salvar o
+Valores para o armazenamento (ainda precisamos definir este serviço embora). 
+Como temos novos valores de configurações agora
+Também chamar changeSubreddit para redefinir tudo e carregar novos GIFs com base 
+nas novas configurações.
+NOTA: Como ainda não implementamos o serviço de dados, comentamos a chamada 
+para ele por enquanto.
+Finalmente, chamamos o presente método para exibir o Modal para o usuário.
 
  */

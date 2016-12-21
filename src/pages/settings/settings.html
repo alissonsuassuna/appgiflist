@@ -1,18 +1,87 @@
 <!--
-  Generated template for the Settings page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
+Criando a página de configurações
+Para abrir a página de configurações vamos usar um Modal. Abrir uma página como Modal é um pouco diferente
+Apenas abrindo uma página normalmente em que é completamente separado para o fluxo de navegação do aplicativo. Um Modal é
+Basicamente uma única página que pode ser aberta sobre o topo do conteúdo atual e, em seguida, fechado (tenho certeza
+Você está familiarizado com outras janelas modais em torno da web como o visualizador de fotos do Facebook).
+Qualquer página pode ser aberta como um Modal, então quando criamos a nossa página de Configurações vamos fazê-lo exatamente como
+Nós qualquer outra página. Vamos começar definindo o modelo para nossa página Configurações.
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-toolbar color="secondary">
     <ion-title>Settings</ion-title>
-  </ion-navbar>
-
+    <ion-buttons end>
+      <button ion-button icon-only (click)="close()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
 
 <ion-content padding>
+  <ion-card>
+    <ion-card-header>
+      Abount
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Giflist</strong> is a client for <strong>reddit</strong>
+          that will endlessly <strong>stream GIFs</strong> from <strong>any
+          subreddit that predominantly contains gifs</strong>. By default
+          it uses the popular <strong>gifs</strong> subreddit, but you can
+          change this to whatever you like, e.g: perfectloops, me_irl,
+          chemicalreactiongifs.</p>
+          <br />
+          <p>To play a GIF, just tap it. To view the original submission for
+          any GIF, just tap the title section and it will open in reddit.
+          You can configure some settings for the application below.
+          Enjoy!</p>
+    </ion-card-content>
+  </ion-card>
 
+  <h3>subreddit</h3>
+
+  <ion-input type="text" placeholder="Digite o nome da pesquisa.." [(ngModel)]="subreddit"></ion-input>
+
+  <h3>Ordenado</h3>
+
+  <ion-segment color="secondary" [(ngModel)]="sort">
+    <ion-segment-button value="hot">
+      Hot
+    </ion-segment-button>
+    <ion-segment-button value="top">
+      Top
+    </ion-segment-button>
+    <ion-segment-button value="new">
+      New
+    </ion-segment-button>
+  </ion-segment>
+
+  <h3>Por Página</h3>
+
+  <ion-segment color="secondary" [(ngModel)]="perPage">
+    <ion-segment-button value="5">
+      5
+    </ion-segment-button>
+    <ion-segment-button value="10">
+      10
+    </ion-segment-button>
+    <ion-segment-button value="15t">
+      15
+    </ion-segment-button>
+  </ion-segment>
+
+  <button ion-button full (click)="save()" color="secondary" style="margin: 20px 0px;">
+    Salvar Configurações
+  </button>
 </ion-content>
+
+<!-- 
+Não há nada muito louco acontecendo neste modelo. Nós definimos nosso navbar como usual, e nós adicionamos um botão
+Para que ele vai chamar um método próximo vamos definir em breve para demitir a janela modal.
+Nós adicionamos um <ion-card> para exibir algumas informações sobre o aplicativo para o usuário e, em seguida, definimos um
+Poucas entradas diferentes. Utilizamos uma entrada de texto simples para definir o subreddit, mas usamos compo-
+Para controlar os valores de classificação e perPage. Todas estas entradas têm ligação bidirecional de dados configurada
+[(NgModel)] para que possamos facilmente acessar esses valores na definição de classe, que vamos criar
+agora.
+
+-->

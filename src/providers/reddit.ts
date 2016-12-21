@@ -118,6 +118,12 @@ export class Reddit {
     this.page++;
     this.fetchData();
   }
+  resetPosts(){
+    this.page = 1;
+    this.posts = [];
+    this.after = null;
+    this.fetchData();
+  }
 }
 /*
 Este é o esqueleto básico para o seu provedor, ele define um monte de variáveis ​​de 
@@ -202,4 +208,12 @@ será executado ao invés.
 Agora que temos a nossa lista de GIFs carregando no aplicativo, podemos exibir dados 
 reais em nossa lista. Mas primeiro, precisamos atualizar nosso modelo para realmente 
 usar os dados.
+=================
+função resetPosts
+
+Quer carregar a página 5 quando mudamos para 'perfectloops'. Tudo o que temos a fazer aqui é redefinir a página, limpar
+Os dados de postagens e limpar o valor após, então basta chamar a função fetchData novamente. Nós já
+Definir o subreddit em outro lugar, chamando assim a função fetchData irá puxar os dados de qualquer que seja a corrente
+Subreddit é agora.
+
  */
