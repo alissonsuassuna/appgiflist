@@ -114,6 +114,10 @@ export class Reddit {
     });
 
   }
+  nextPage(){
+    this.page++;
+    this.fetchData();
+  }
 }
 /*
 Este é o esqueleto básico para o seu provedor, ele define um monte de variáveis ​​de 

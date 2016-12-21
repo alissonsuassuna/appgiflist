@@ -6,6 +6,7 @@ import { SettingsPage } from '../settings/settings';
 import { Data } from '../../providers/data';
 import { Reddit } from '../../providers/reddit';
 import { FormControl } from '@angular/forms';
+import { InAppBrowser } from 'ionic-native';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -47,13 +48,37 @@ export class HomePage {
     console.log("sdd");
   }
   playVideo(e, post): void{
-    console.log("aaa");
+    
+    //Criar uma referências para vídeo
+    let video = e.target;
+
+    if(!post.alreadyLoaded){
+      post.showLoader = true;
+    }
+
+    //Alternar a reprodução de vídeo
+    if(video.paused){
+
+      //Mostra o loader gif
+      video.play();
+
+      //Uma vez que o vídeo começa a ser reproduzido, remova o carregador gif
+      video.addEventListener("playing", function(e){
+        post.showLoader = false;
+        post.alreadyLoader = true;
+      });
+    }else{
+      video.pause();
+    }
   }
   changeSubreddit(): void{
     console.log("aaaa");
   }
   loadMore(): void{
-    console.log("aaa");
+    this.redditService.nextPage();
+  }
+  showComments(post): void{
+    let browser = new InAppBrowser('http://reddit.com' + post.data.permalink, '_system');
   }
 }
 
@@ -153,6 +178,24 @@ Como você pode dizer isso nos permitiu criar algumas funcionalidades
 muito úteis realmente Facilmente, mas nós poderíamos ter tão facilmente 
 usado o normal ngModel abordagem e apenas usado um botão para
 Desencadeando pesquisas em vez disso.
+========================================
+função playVideo
 
+Se o usuário tocar no vídeo, então nós queremos reproduzir o vídeo (ou pausá-lo 
+se ele já está jogando). Nós usamos
+O evento que passamos a partir do modelo para pegar uma referência para o vídeo 
+em si, o que nos permite
+Para fazer coisas como jogá-lo e pausá-lo. Também alternamos a propriedade 
+showLoader aqui para determinar se o
+Ícone de carregamento deve ser exibido ou não. Só queremos que o carregamento 
+seja exibido na primeira vez que o usuário
+Vídeo, caso contrário, o ícone de carregamento seria acionado quando pausar 
+o vídeo também, então verificamos
+Já Loaded antes de ligá-lo.
+===============================
+função showComments
+
+Comparado com os outros, esta é uma função muito simples. Nós simplesmente pegar o link dos dados dos posts e
+Use InAppBrowser para iniciá-lo.
 
  */
