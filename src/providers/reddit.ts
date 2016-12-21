@@ -25,87 +25,94 @@ export class Reddit {
   constructor(public http: Http) {
   }
 
-  fetchData(): void{
+  fetchData(): void {
 
-/* Crie o URL que será usado para acessar a API com base nas preferências atuais 
-dos usuários */
-    let url = 'https://www.reddit.com/r/' + this.subreddit + '/' + this.sort +
-      '/.json?limit=' + this.perPage;
+    //Crie o URL que será usado para acessar a API com base nas preferências atuais do usuário
+    let url = 'https://www.reddit.com/r/' + this.subreddit + '/' + this.sort + '/.json?limit='+ this.perPage;
 
-/* Se não estivermos na primeira página, precisamos adicionar o parâmetro after 
-para que só obtenhamos novos resultados. Seu parâmetro basicamente diz "me dê 
-os posts que vêm depois destapostar" */
+    // Se não estivermos na primeira página, precisamos adicionar o parâmetro after para que possamos obter novos resultados
+    //Este parâmetro diz basicamente "me dê os posts que vêm depois deste post"
     if(this.after){
-      url += '&after' + this.after;
-    } 
-//Estamos agora buscando dados, portanto, defina a variável de carregamento como 
-//verdadeira
+      url += '&after=' + this.after;
+    }
+
+    //Estamos agora buscando dados, portanto, defina a variável de carregamento como verdadeira
     this.loading = true;
-//Fazer uma solicitação Http para o URL e assinar a resposta
+
+    //Fazer uma solicitação Http para o URL e assinar a resposta
     this.http.get(url).map(res => res.json()).subscribe(data => {
 
-      let stopIndex = this.posts.lenght;
+      let stopIndex = this.posts.length;
       this.posts = this.posts.concat(data.data.children);
-/*Loop através de todas as novas postagens que foram adicionadas. Estamos fazendo 
-um loop em sentido inverso, uma vez que estamos removendo alguns itens. */
-      for(let i = this.posts.lenght -1; i >= stopIndex; i--){
+
+      //Loop através de todas as novas postagens que foram adicionadas. Estamos fazendo um loop
+      //Em sentido inverso, uma vez que estamos removendo alguns itens.
+      for(let i = this.posts.length - 1; i >= stopIndex; i--){
+
         let post = this.posts[i];
-/*Adicione uma nova propriedade que será usada mais tarde para alternar um carregamento
-Animação para postagens individuais */
+
+        //Adicione uma nova propriedade que será usada mais tarde para alternar uma animação de carregamento
+        //Para postagens individuais
         post.showLoader = false;
         post.alreadyLoaded = false;
-// Adicionar uma miniatura NSFW para mensagens NSFW
+
+        //Adiciono  NSFW thumbnail para NSFW posts
         if(post.data.thumbnail == 'nsfw'){
           this.posts[i].data.thumbnail = 'images/nsfw.png';
         }
-/* Remova todas as mensagens que não estejam no formato .gifv vs .webm e
-Converter os que são para arquivos. Mp4. */
-        if(post.data.url.indexOF('.gifv') > -1 || post.data.url.indexOF('.webm') > -1){
+
+          /*
+          * Remova todas as mensagens que não estejam no formato .gifv vs .webm e converta as que são para arquivos .mp4.
+          */
+        if(post.data.url.indexOf('.gifv') > -1 || post.data.url.indexOf('.webm') > -1){
           this.posts[i].data.url = post.data.url.replace('.gifv', '.mp4');
           this.posts[i].data.url = post.data.url.replace('.webm', '.mp4');
-//Se uma imagem de visualização estiver disponível, atribua-a à
-//'instantâneo'
+
+              //Se uma imagem de pré-visualização estiver disponível, atribua-a à publicação como 'snapshot' (Instantâneo)
           if(typeof(post.data.preview) != "undefined"){
             this.posts[i].data.snapshot = post.data.preview.images[0].source.url.replace(/&amp;/g, '&');
-//Se o instantâneo não estiver definido, altere-o para que fique em branco
-//Não usa uma imagem quebrada
+
+                //Se o snapshot (instantâneo) não estiver definido, altere-o para que fique em branco para que ele não use uma imagem quebrada
             if(this.posts[i].data.snapshot == "undefined"){
               this.posts[i].data.snapshot = "";
             }
           }
-          else{
+          else {
             this.posts[i].data.snapshot = "";
           }
         }
-        else{
+        else {
           this.posts.splice(i, 1);
         }
       }
-// Continue buscando mais GIFs se não recuperarmos o suficiente para preencher 
-// uma página
-// Mas desista depois de 20 tentativas se ainda não temos o suficiente
-      if(data.data.children.lenght == 0 || this.moreCount > 20){
+
+      //Continue buscando mais GIFs se não recuperarmos o suficiente para preencher uma página
+      //Mas desista depois de 20 tentativas se ainda não temos o suficiente
+      if(data.data.children.length === 0 || this.moreCount > 20){
 
         this.moreCount = 0;
         this.loading = false;
+
       }
-      else{
-        this.after = data.data.children[data.data.children.length -1].data.name;
+      else {
+
+        this.after = data.data.children[data.data.children.length - 1].data.name;
 
         if(this.posts.length < this.perPage * this.page){
           this.fetchData();
           this.moreCount++;
-
-        }
-        else{
-          this.loading = false;
+        } 
+        else {
+      this.loading = false;
           this.moreCount = 0;
         }
       }
+
     }, (err) => {
-// Falha silenciosamente, nesse caso, o spinner de carregamento continuará exibição
-      console.log("subreddit não existe ");
-    }); 
+      //Caso ocorra algum erro, tratamos ele com essa mensagem
+      console.log("subreddit não existe!");
+    });
+
   }
 }
 /*
