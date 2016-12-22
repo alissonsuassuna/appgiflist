@@ -1,16 +1,32 @@
 // http://ionicframework.com/docs/v2/theming/
+/*
+App Global Sass
+// ------------------------------------------------ -
+Coloque regras de estilo aqui que você deseja aplicar globalmente. Esses
+Os estilos são para o aplicativo inteiro e não apenas um componente.
+Além disso, este arquivo também pode ser usado como um ponto de entrada
+Para importar outros arquivos Sass para serem incluídos no CSS de saída.
 
+Variáveis Sass compartilhadas, que podem ser usadas para ajustar
+Variáveis Sass padrão, pertencem a "theme / variables.scss".
 
-// App Global Sass
-// --------------------------------------------------
-// Put style rules here that you want to apply globally. These
-// styles are for the entire app and not just one component.
-// Additionally, this file can be also used as an entry point
-// to import other Sass files to be included in the output CSS.
-//
-// Shared Sass variables, which can be used to adjust Ionic's
-// default Sass variables, belong in "theme/variables.scss".
-//
-// To declare rules for a specific mode, create a child rule
-// for the .md, .ios, or .wp mode classes. The mode class is
-// automatically applied to the <body> element in the app.
+Para declarar regras para um modo específico, crie uma regra filho
+Para as classes de modo .md, .ios ou .wp. A classe de modo é
+Automaticamente aplicado ao elemento <body> no aplicativo.
+*/
+.ios {
+    ion-title {
+        padding: 0px 35px 1px 0px;
+    }
+}
+body {
+    background-color: #e74c3c;
+}
+
+/*
+Quando o runnin no IOS Ionic adicionará automaticamente uma classe ios ao <body> para que possamos segmentar especificamente
+IOS usando o método acima. Você pode fazer o mesmo para Android usando md e também para Windows usando wp.
+Em seguida, vamos adicionar uma cor de fundo para a tag body, que iremos adicionar ao genérico .scss
+Arquivo.
+Também vamos adicionar mais um estilo de aplicativo.
+*/
