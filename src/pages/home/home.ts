@@ -42,7 +42,21 @@ export class HomePage {
   
   }
   loadSettings(): void{
-    this.redditService.fetchData();
+
+    this.dataService.getData().then((settings) => {
+
+      if(settings && typeof(settings) != "undefined"){
+        let newSettings = JSON.parse(settings);
+        this.redditService.settings = newSettings;
+
+        if(newSettings.length != 0){
+          this.redditService.sort = newSettings.sort;
+          this.redditService.perPage = newSettings.perPage;
+          this.redditService.subreddit = newSettings.subreddit;
+        }
+      }
+      this.changeSubreddit();
+    });
   }
   openSettings(): void{
     
@@ -59,7 +73,7 @@ export class HomePage {
         this.redditService.sort = settings.sort;
         this.redditService.subreddit = settings.subreddit;
 
-        //this.dataService.save(settings);
+        this.dataService.save(settings);
         this.changeSubreddit();
       }
     });
@@ -235,5 +249,13 @@ nas novas configurações.
 NOTA: Como ainda não implementamos o serviço de dados, comentamos a chamada 
 para ele por enquanto.
 Finalmente, chamamos o presente método para exibir o Modal para o usuário.
+==================================
+Função loadSettings
 
+Aqui estamos simplesmente chamando a função getData que definimos no nosso serviço de dados, e quando isso retorna
+Nossos dados de configurações analisamos o JSON em um objeto e lemos os valores nas variáveis de
+Provedor Reddit. Em seguida, chamamos a função changeSubreddit para acionar postagens de reddit para serem buscadas
+Com as novas configurações.
+Agora que implementamos o serviço de dados, podemos descomentar a chamada para o serviço de dados que fizemos
+Anteriormente.
  */
